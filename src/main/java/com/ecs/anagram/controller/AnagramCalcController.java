@@ -5,13 +5,12 @@ package com.ecs.anagram.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 
 // This Service
 import com.ecs.anagram.component.AnagramComponent;
@@ -30,14 +29,14 @@ public class AnagramCalcController {
 		this.anagramComponent = anagramComponent;
 	}
 
-	/* Old Style
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/word/{searchWord}")
 	BaseRecord getAnagrams(@PathVariable String searchWord) {
 		logger.info("in getAnagrams(()");
-		return this.anagramComponent.findAnagrams(searchWord);
+		BaseRecord baseRecord = anagramComponent.findAnagrams(searchWord);
+		return baseRecord;
 	}
-	*/
-	
+	/*
 	@RequestMapping(method = RequestMethod.GET, path = "/word/{searchWord}")
 	public ResponseEntity<BaseRecord> getAnagrams(@PathVariable String searchWord) {
 		logger.info("in getAnagrams(()");
@@ -47,5 +46,6 @@ public class AnagramCalcController {
 		BaseRecord baseRecord = anagramComponent.findAnagrams(searchWord);
 		return ResponseEntity.ok(baseRecord); 
 	}
+	*/
 	
 }

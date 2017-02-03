@@ -4,10 +4,8 @@ import java.util.ArrayList;
 // Java
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -22,10 +20,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+//import org.springframework.web.client.RestTemplate;
 
 
 // This Service
@@ -69,7 +67,7 @@ public class AnagramComponent {
 		//logger.info("Dictionary Words are:" + dictionaryWords);
 	}
 	
-	// This the service method to find valid anagrams
+	// This is the service method to find valid anagrams
 	public BaseRecord findAnagrams(String searchWord) {
 		// Use TreeMap to achieve sorting
 		TreeSet <String> result = new TreeSet <String>();
