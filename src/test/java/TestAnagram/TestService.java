@@ -1,5 +1,7 @@
 package TestAnagram;
 
+import static org.junit.Assert.assertEquals;
+
 // java
 import java.util.Random;
 
@@ -16,7 +18,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 // this service
 import com.ecs.anagram.Application;
 import com.ecs.anagram.component.AnagramComponent;
+import com.ecs.anagram.component.AnagramRecord;
 import com.ecs.anagram.component.BaseRecord;
+import com.ecs.anagram.component.MessageRecord;
 
 
 
@@ -36,30 +40,58 @@ public class TestService {
 	@Test
 	public void testService() {
 		String alphaChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-		String alphanumericChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz";
-		int wordLength = 6;
+		String alphanumericChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz";	
+		BaseRecord baseRecord = new BaseRecord();
+		int testWordLength = 6;
 		
 		logger.info("Test Service: postive test cases");
-		testInput("glare");
-		testInput("ezons");
-		testInput("spool");
+		baseRecord = testInput("glare");
+		assertEquals("[Alger, lager, large, regal]", ((AnagramRecord) baseRecord).getAnagrams());
+		
+		baseRecord = (AnagramRecord)testInput("ezons");
+		assertEquals("[zones]", ((AnagramRecord) baseRecord).getAnagrams());
+		
+		baseRecord = (AnagramRecord)testInput("spool");
+		assertEquals("[loops, pools, sloop]", ((AnagramRecord) baseRecord).getAnagrams());
+		
+		baseRecord = (AnagramRecord)testInput("newsi");
+		assertEquals("[sinew, swine, wines]", ((AnagramRecord) baseRecord).getAnagrams());
+		
+		logger.info("Test Service: negative test cases");
+		baseRecord = testInput("blah");
+		assertEquals("Couldn't find word blah", ((MessageRecord) baseRecord).getMessage());
+		
+		baseRecord = testInput("");
+		assertEquals("Couldn't find word ", ((MessageRecord) baseRecord).getMessage());
+		
+		baseRecord = testInput(" ");
+		assertEquals("Couldn't find word  ", ((MessageRecord) baseRecord).getMessage());
+		
+		baseRecord = testInput(new String());
+		assertEquals("Couldn't find word ", ((MessageRecord) baseRecord).getMessage());
 		
 		logger.info("Test Service: random alpha strings");
-		for (int i = 0; i < 10; i++) {
-			testInput(generateRandomChars(alphaChars,wordLength));
+		// Random alpha strings may or may not find anagrams in dictionary
+		// thus cannot be asserted
+		for (int i = 0; i < 5; i++) {
+			testInput(generateRandomChars(alphaChars,testWordLength));
 		}
 		
 		logger.info("Test Service: random alphanumeric strings");
-		for (int i = 0; i < 10; i++) {
-			testInput(generateRandomChars(alphanumericChars,wordLength));
+		// All alphanumeric strings should  fail thus can be asserted
+		for (int i = 0; i < 5; i++) {
+			String testStr = generateRandomChars(alphanumericChars,testWordLength);
+			baseRecord = testInput(testStr);
+			assertEquals("Couldn't find word " + testStr, ((MessageRecord) baseRecord).getMessage());
 		}
 		logger.info("End of Test Service");
 	}
 	
  
-	protected void testInput(String input) {
+	protected BaseRecord testInput(String input) {
  		logger.info("Input: " + input);
  		BaseRecord baseRecord = anagramComponent.findAnagrams(input);
+ 		return baseRecord;
  	}
  	
  	protected String generateRandomChars(String candidateChars, int length) {
